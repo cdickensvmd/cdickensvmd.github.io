@@ -67,19 +67,19 @@
             padding: 5px;
         }
         .delete-button {
-            color: black;
-            cursor: pointer;
-            font-weight: bold;
             margin-left: 10px;
-            font-size: 18px;
-        }
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+	    font-size: 14px;
+            }
     </style>
 </head>
 <body>
 
     <h1>Veterinary Bloodwork Entry</h1>
 
-    <div class="section" id="cbc">
+    <div class="section" id="CBC">
     <h2>CBC</h2>
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
@@ -108,6 +108,12 @@
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
         <label class="test-name">Basophils</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">x10^3/µL</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">Monocytes</label>
         <input type="text" class="test-value" oninput="updateOutput()" />
         <span class="test-unit">x10^3/µL</span>
     </div>
@@ -153,7 +159,7 @@
         <input type="text" class="test-value" oninput="updateOutput()" />
         <span class="test-unit">HPF</span>
     </div>
-    <button onclick="addTest('CBC')">Add Additional CBC Test</button>
+   <button onclick="addTest('CBC')">Add Additional CBC Test</button>
 </div>
 
 <div class="section" id="chemistry">
@@ -274,6 +280,12 @@
     </div>
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
+        <label class="test-name">Magnesium</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">mg/dL</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
         <label class="test-name">Na/K Ratio</label>
         <input type="text" class="test-value" oninput="updateOutput()" />
         <span class="test-unit"></span>
@@ -295,6 +307,24 @@
 
 <div class="section" id="vbg">
     <h2>PCV/TS/VBG</h2>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">PCV</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">%</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">TS</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">g/dL</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">BG</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">mg/dL</span>
+    </div>
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
         <label class="test-name">pO2</label>
@@ -618,6 +648,10 @@
 </div>
 <button onclick="copyToClipboard()">Copy Results</button>
 
+<label>
+    <input type="checkbox" id="include-units" checked onchange="updateOutput()"> Include Units in Results
+</label>
+
 <style>
     /* Style to ensure the output content is at the top of the section */
     #output {
@@ -636,39 +670,53 @@
         font-family: monospace; /* Use monospace font for better readability */
     }
 </style>
-   
- <script>
+
+<script>
     let draggedElement = null;
 
     function updateOutput() {
-        const sections = ['cbc', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine', 'Fluid Analysis']; // Add more sections as needed
-        const output = document.getElementById('output-content');
-        let results = 'Bloodwork Values (Results):\n';
+    const includeUnits = document.getElementById('include-units').checked;
+    const sections = ['CBC', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine','Fluid Analysis']; // Update this to match existing section IDs
+    const output = document.getElementById('output-content');
+    let results = 'Bloodwork Values (Results):\n';
 
-        sections.forEach(sectionId => {
-            const section = document.getElementById(sectionId);
-            const rows = section.querySelectorAll('.test-row');
-            let sectionResults = '';
+    sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
 
-            rows.forEach(row => {
-                const testName = row.querySelector('.test-name').innerText;
-                const value = row.querySelector('.test-value').value;
-                const unitElement = row.querySelector('.test-unit');
-                const unit = unitElement ? unitElement.innerText : ''; // Handle missing unit
+        // Skip if the section doesn't exist
+        if (!section) return;
 
-                if (value) {
-                    sectionResults += `${testName}: ${value} ${unit}. `;
+        const rows = section.querySelectorAll('.test-row');
+        let sectionResults = '';
+
+        rows.forEach(row => {
+            const testName = row.querySelector('.test-name').innerText;
+            const value = row.querySelector('.test-value').value;
+            const unitElement = row.querySelector('.test-unit');
+            const unit = unitElement ? unitElement.innerText : ''; // Handle missing unit
+
+            // Include only rows with a value
+            if (value) {
+                sectionResults += `${testName}: ${value}`;
+                if (includeUnits && unit) {
+                    sectionResults += ` ${unit}`;
                 }
-            });
-
-            if (sectionResults) {
-                const sectionTitle = section.querySelector('h2').innerText;
-                results += `${sectionTitle}:\n${sectionResults.trim()}\n\n`;
+                sectionResults += `. `;
             }
         });
 
-        output.textContent = results.trim();
-    }
+        // Add section results if there are any
+        if (sectionResults.trim()) {
+            const sectionTitle = section.querySelector('h2') 
+                ? section.querySelector('h2').innerText 
+                : sectionId;
+            results += `${sectionTitle}:\n${sectionResults.trim()}\n\n`;
+        }
+    });
+
+    output.textContent = results.trim();
+}
+
 
     function copyToClipboard() {
         const output = document.getElementById('output-content');
@@ -689,18 +737,16 @@
             newRow.className = 'test-row';
             newRow.draggable = true;
 
-            // If unit is provided, show it; otherwise, just show the test name
             newRow.innerHTML = `
                 <span class="drag-handle">☰</span>
                 <label class="test-name">${testName}</label>
                 <input type="text" class="test-value" oninput="updateOutput()" />
-                ${unit ? `<span class="test-unit">${unit}</span>` : ''}  <!-- Only show unit if provided -->
+                ${unit ? `<span class="test-unit">${unit}</span>` : ''}
                 <span class="delete-button" onclick="deleteTest(this)">x</span>
             `;
 
             addDragAndDropHandlers(newRow);
 
-            // Insert the new row above the "Enter new test" button
             const button = document.getElementById('enter-new-test'); // Assuming the button has this ID
             section.insertBefore(newRow, button);
         }
@@ -708,8 +754,8 @@
 
     function deleteTest(deleteButton) {
         const testRow = deleteButton.parentElement;
-        testRow.remove();  // Removes the test row
-        updateOutput();    // Update the output after deletion
+        testRow.remove();
+        updateOutput();
     }
 
     function addDragAndDropHandlers(row) {
@@ -734,7 +780,6 @@
         });
     }
 
-    // Initialize the drag and drop functionality for all existing test rows
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.test-row').forEach(addDragAndDropHandlers);
     });
