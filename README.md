@@ -41,5 +41,11 @@ A streamlined tool designed to simplify the entry, organization, and output of b
 **Reorder Tests**:
  - Drag and drop test rows to match the preferred order for your workflow.
 
+## License
+- This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+- For feedback or support, feel free to reach out:
+- Email: codydickensvmd@gmail.com
 
 
