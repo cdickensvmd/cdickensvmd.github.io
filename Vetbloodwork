@@ -784,3 +784,8 @@
         document.querySelectorAll('.test-row').forEach(addDragAndDropHandlers);
     });
 </script>
+
+<footer>
+    <p>&copy;2024 Bloodwork Value Entry Tool. Created by Cody Dickens, VMD. All rights reserved.</p>
+    <p><a href="/license">License</a></p> <!-- Link to License Page -->
+</footer>
