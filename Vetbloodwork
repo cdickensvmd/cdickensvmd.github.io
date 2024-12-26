@@ -601,6 +601,29 @@
     <button onclick="addTest('endocrine')">Add Additional Endocrine Test</button>
 </div>
 
+<div class="section" id="coagulation">
+    <h2>Coagulation</h2>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">PT</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">sec</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">PTT</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">sec</span>
+    </div>
+    <div class="test-row" draggable="true">
+        <span class="drag-handle">☰</span>
+        <label class="test-name">D-Dimer</label>
+        <input type="text" class="test-value" oninput="updateOutput()" />
+        <span class="test-unit">ng/mL</span>
+    </div>
+    <button onclick="addTest('coagulation')">Add Additional Coagulation Test</button>
+</div>
+
 <div class="section" id="Fluid Analysis">
     <h2>Fluid Analysis</h2>
     <div class="test-row" draggable="true">
@@ -676,7 +699,7 @@
 
     function updateOutput() {
     const includeUnits = document.getElementById('include-units').checked;
-    const sections = ['CBC', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine','Fluid Analysis']; // Update this to match existing section IDs
+    const sections = ['CBC', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine', 'coagulation', 'Fluid Analysis']; // Update this to match existing section IDs
     const output = document.getElementById('output-content');
     let results = 'Bloodwork Values (Results):\n';
 
