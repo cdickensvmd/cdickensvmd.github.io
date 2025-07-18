@@ -707,13 +707,14 @@
 
         const rows = section.querySelectorAll('.test-row');
         let sectionResults = '';
-
+      
         rows.forEach(row => {
-            const testKey = testNameFull.toLowerCase();
-            const testName = testAbbreviations[testKey] || testNameFull;
-            const value = row.querySelector('.test-value').value;
-            const unitElement = row.querySelector('.test-unit');
-            const unit = unitElement ? unitElement.innerText : '';
+             const testNameFull = row.querySelector('.test-name').innerText.trim();
+             const testKey = testNameFull.toLowerCase();
+             const testName = testAbbreviations[testKey] || testNameFull;
+             const value = row.querySelector('.test-value').value;
+             const unitElement = row.querySelector('.test-unit');
+             const unit = unitElement ? unitElement.innerText : '';
 
 	    // Include only rows with a value
             if (value) {
@@ -736,39 +737,40 @@
     output.textContent = results.trim();
 }
     const testAbbreviations = {
-    'WBC': 'WBC',
-    'RBC': 'RBC',
-    'Hemoglobin': 'HGB',
-    'Hematocrit': 'HCT',
-    'Platelets': 'Plt',
-    'Mean Corpuscular Volume': 'MCV',
-    'Mean Corpuscular Hemoglobin': 'MCH',
-    'Mean Corpuscular Hemoglobin Concentration': 'MCHC',
-    'Red Cell Distribution Width': 'RDW',
-    'Neutrophils': 'Neu',
-    'Lymphocytes': 'Lym',
-    'Monocytes': 'Mono',
-    'Eosinophils': 'Eos',
-    'Basophils': 'Baso',
-    'Glucose': 'GLU',
-    'Calcium': 'Ca',
-    'Sodium': 'Na',
-    'Potassium': 'K',
-    'Phosphorus': 'Phos',
-    'Chloride': 'CL',
-    'Bicarbonate': 'HCO3',
-    'Blood Urea Nitrogen': 'BUN',
-    'Creatinine': 'CRE',
-    'Alanine Aminotransferase': 'ALT',
-    'Aspartate Aminotransferase': 'AST',
-    'Alkaline Phosphatase': 'ALP',
-    'Total Bilirubin': 'Tbil',
-    'Albumin': 'Alb',
-    'Total Protein (TP)': 'TP',
-    'Anion Gap': 'AG',
-    'Cholesterol': 'Chol',
-    'Magnesium': 'Mg',
-    'Ionized Calcium': 'iCa'
+    'wbc': 'WBC',
+    'rbc': 'RBC',
+    'hemoglobin': 'HGB',
+    'hematocrit': 'HCT',
+    'platelets': 'Plt',
+    'mean corpuscular volume': 'MCV',
+    'mean corpuscular hemoglobin': 'MCH',
+    'mean corpuscular hemoglobin concentration': 'MCHC',
+    'red cell distribution width': 'RDW',
+    'neutrophils': 'Neu',
+    'lymphocytes': 'Lym',
+    'monocytes': 'Mono',
+    'eosinophils': 'Eos',
+    'basophils': 'Baso',
+    'glucose': 'GLU',
+    'calcium': 'Ca',
+    'sodium': 'Na',
+    'potassium': 'K',
+    'phosphorus': 'Phos',
+    'chloride': 'CL',
+    'bicarbonate': 'HCO3',
+    'blood urea nitrogen': 'BUN',
+    'creatinine': 'CRE',
+    'alanine aminotransferase': 'ALT',
+    'aspartate aminotransferase': 'AST',
+    'alkaline phosphatase': 'ALP',
+    'total bilirubin': 'Tbil',
+    'albumin': 'Alb',
+    'total protein (tp)': 'TP',
+    'protein': 'TP',
+    'anion gap': 'AG',
+    'cholesterol': 'Chol',
+    'magnesium': 'Mg',
+    'ionized calcium': 'iCa'
 };
 
 
