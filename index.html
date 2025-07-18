@@ -709,12 +709,14 @@
         let sectionResults = '';
 
         rows.forEach(row => {
-            const testNameFull = row.querySelector('.test-name').innerText;
-            const testName = testAbbreviations[testNameFull] || testNameFull;
+            const testNameFull = row.querySelector('.test-name').innerText.trim();
+            const testKey = testNameFull.charAt(0).toUpperCase() + testNameFull.slice(1).toLowerCase(); // Capitalize first letter
+            const testName = testAbbreviations[testKey] || testNameFull;
             const value = row.querySelector('.test-value').value;
             const unitElement = row.querySelector('.test-unit');
             const unit = unitElement ? unitElement.innerText : '';
 
+	    // Include only rows with a value
             if (value) {
                 sectionResults += `${testName} ${value}`;
                 if (includeUnits && unit) {
@@ -723,7 +725,7 @@
                 sectionResults += `, `;
             }
         });
-
+        // Add section results if there are any
         if (sectionResults.trim()) {
             const sectionTitle = section.querySelector('h2') 
                 ? section.querySelector('h2').innerText 
@@ -736,8 +738,8 @@
 }
 
     const testAbbreviations = {
-    'White Blood Cells': 'WBC',
-    'Red Blood Cells': 'RBC',
+    'Wbc': 'WBC',
+    'Rbc': 'RBC',
     'Hemoglobin': 'HGB',
     'Hematocrit': 'HCT',
     'Platelets': 'PLT',
@@ -764,9 +766,9 @@
     'Total Bilirubin': 'TBIL',
     'Albumin': 'ALB',
     'Total Protein': 'TP',
-    'Anion Gap': 'AGAP'
-    // Add more as needed
+    'Anion Gap': 'AG'
 };
+
 
     function copyToClipboard() {
         const output = document.getElementById('output-content');
