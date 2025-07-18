@@ -107,13 +107,13 @@
     </div>
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
-        <label class="test-name">Basophils</label>
+        <label class="test-name">Monocytes</label>
         <input type="text" class="test-value" oninput="updateOutput()" />
         <span class="test-unit">x10^3/µL</span>
     </div>
     <div class="test-row" draggable="true">
         <span class="drag-handle">☰</span>
-        <label class="test-name">Monocytes</label>
+        <label class="test-name">Basophils</label>
         <input type="text" class="test-value" oninput="updateOutput()" />
         <span class="test-unit">x10^3/µL</span>
     </div>
@@ -695,40 +695,35 @@
 </style>
 
 <script>
-    let draggedElement = null;
-
-    function updateOutput() {
+   function updateOutput() {
     const includeUnits = document.getElementById('include-units').checked;
-    const sections = ['CBC', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine', 'coagulation', 'Fluid Analysis']; // Update this to match existing section IDs
+    const sections = ['CBC', 'chemistry', 'vbg', 'other-tests', 'urinalysis', 'endocrine', 'coagulation', 'Fluid Analysis'];
     const output = document.getElementById('output-content');
     let results = 'Bloodwork Values (Results):\n';
 
     sections.forEach(sectionId => {
         const section = document.getElementById(sectionId);
-
-        // Skip if the section doesn't exist
         if (!section) return;
 
         const rows = section.querySelectorAll('.test-row');
         let sectionResults = '';
 
         rows.forEach(row => {
-            const testName = row.querySelector('.test-name').innerText;
+            const testNameFull = row.querySelector('.test-name').innerText;
+            const testName = testAbbreviations[testNameFull] || testNameFull;
             const value = row.querySelector('.test-value').value;
             const unitElement = row.querySelector('.test-unit');
-            const unit = unitElement ? unitElement.innerText : ''; // Handle missing unit
+            const unit = unitElement ? unitElement.innerText : '';
 
-            // Include only rows with a value
             if (value) {
-                sectionResults += `${testName}: ${value}`;
+                sectionResults += `${testName} ${value}`;
                 if (includeUnits && unit) {
                     sectionResults += ` ${unit}`;
                 }
-                sectionResults += `. `;
+                sectionResults += `, `;
             }
         });
 
-        // Add section results if there are any
         if (sectionResults.trim()) {
             const sectionTitle = section.querySelector('h2') 
                 ? section.querySelector('h2').innerText 
@@ -739,6 +734,39 @@
 
     output.textContent = results.trim();
 }
+<script>
+const testAbbreviations = {
+    'White Blood Cells': 'WBC',
+    'Red Blood Cells': 'RBC',
+    'Hemoglobin': 'HGB',
+    'Hematocrit': 'HCT',
+    'Platelets': 'PLT',
+    'Mean Corpuscular Volume': 'MCV',
+    'Mean Corpuscular Hemoglobin': 'MCH',
+    'Mean Corpuscular Hemoglobin Concentration': 'MCHC',
+    'Red Cell Distribution Width': 'RDW',
+    'Neutrophils': 'NEU',
+    'Lymphocytes': 'LYM',
+    'Monocytes': 'MONO',
+    'Eosinophils': 'EOS',
+    'Basophils': 'BASO',
+    'Glucose': 'GLU',
+    'Calcium': 'CA',
+    'Sodium': 'NA',
+    'Potassium': 'K',
+    'Chloride': 'CL',
+    'Bicarbonate': 'HCO3',
+    'Blood Urea Nitrogen': 'BUN',
+    'Creatinine': 'CRE',
+    'Alanine Aminotransferase': 'ALT',
+    'Aspartate Aminotransferase': 'AST',
+    'Alkaline Phosphatase': 'ALP',
+    'Total Bilirubin': 'TBIL',
+    'Albumin': 'ALB',
+    'Total Protein': 'TP',
+    'Anion Gap': 'AGAP'
+    // Add more as needed
+};
 
 
     function copyToClipboard() {
