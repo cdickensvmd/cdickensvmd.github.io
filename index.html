@@ -709,8 +709,7 @@
         let sectionResults = '';
 
         rows.forEach(row => {
-            const testNameFull = row.querySelector('.test-name').innerText.trim();
-            const testKey = testNameFull.charAt(0).toUpperCase() + testNameFull.slice(1).toLowerCase(); // Capitalize first letter
+            const testKey = testNameFull.toLowerCase();
             const testName = testAbbreviations[testKey] || testNameFull;
             const value = row.querySelector('.test-value').value;
             const unitElement = row.querySelector('.test-unit');
